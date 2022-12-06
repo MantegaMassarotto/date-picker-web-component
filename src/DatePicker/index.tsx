@@ -1,13 +1,23 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import useDatePicker from '../useDatePicker';
 
-const DatePicker: React.FC = (props) => {
+type Props = {
+  onChange: (date: string) => void;
+}
+
+const DatePicker: React.FC<Props> = ({ onChange }) => {
   const elemRefYear = useRef<HTMLDivElement>(null);
   const elemRefMonth = useRef<HTMLDivElement>(null);
   const elemRefDay = useRef<HTMLDivElement>(null);
 
-  useDatePicker(elemRefYear, elemRefMonth, elemRefDay);
+  const { date } = useDatePicker(elemRefYear, elemRefMonth, elemRefDay);
+
+  useEffect(() => {
+    if (date) {
+      onChange(date);
+    }
+  }, [date, onChange]);
 
   return (
     <div className="date-selector">

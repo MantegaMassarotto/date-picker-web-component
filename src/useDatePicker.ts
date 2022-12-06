@@ -46,7 +46,7 @@ interface Elem {
 const useDatePicker = (
   elemRefYear: React.RefObject<HTMLDivElement>,
   elemRefMonth: React.RefObject<HTMLDivElement>,
-  elemRefDay: React.RefObject<HTMLDivElement>
+  elemRefDay: React.RefObject<HTMLDivElement>,
 ) => {
   const [config, setConfig] = useState<Config>({
     itemAngle: 0,
@@ -56,6 +56,19 @@ const useDatePicker = (
   });
 
   const [elems, setElems] = useState<Elem[]>([]);
+
+  const [date, setDate] = useState('');
+
+  const [year, setYear] = useState('');
+  const [month, setMonth] = useState('');
+  const [day, setDay] = useState('');
+
+  useEffect(() => {
+    if (year && month && day) {
+      const date =  `${year}-${month}-${day}`
+      setDate(date);
+    }
+  }, [year, month, day]);
 
   const getMonths = (year?: string) => {
     let months: { value: number; text: string }[] = [];
@@ -184,17 +197,25 @@ const useDatePicker = (
   const selectByScroll = useCallback(
     (paramScroll: any, elem: Elem) => {
       paramScroll = normalizeScroll(paramScroll, elem) | 0;
+
       if (paramScroll > elem.values.length - 1) {
         paramScroll = elem.values.length - 1;
         moveTo(paramScroll, elem);
       }
       moveTo(paramScroll, elem);
       scroll = paramScroll;
-      // selected = this.source[scroll];
-      // value = this.selected.value;
-      // this.onChange && this.onChange(this.selected);
+      // console.log(scroll);
+      const selected = elem.values[scroll];
+
+      if (elem.el === elemRefYear.current) {
+        setYear(selected.text);
+      } else if (elem.el === elemRefMonth.current) {
+        setMonth(selected.text);
+      } else if (elem.el === elemRefDay.current) {
+        setDay(selected.text);
+      }
     },
-    [moveTo, normalizeScroll]
+    [elemRefDay, elemRefMonth, elemRefYear, moveTo, normalizeScroll]
   );
 
   const animateMoveByInitV = useCallback(
@@ -233,7 +254,6 @@ const useDatePicker = (
         let startY = touchData.yArr[touchData.yArr.length - 2][0];
         let endY = touchData.yArr[touchData.yArr.length - 1][0];
 
-        // 计算速度
         v = (((startY - endY) / itemHeight) * 1000) / (endTime - startTime);
         let sign = v > 0 ? 1 : -1;
 
@@ -242,7 +262,6 @@ const useDatePicker = (
 
       scroll = touchData.touchScroll;
       animateMoveByInitV(v, elem);
-      // console.log('end');
     },
     [animateMoveByInitV, config]
   );
@@ -355,7 +374,7 @@ const useDatePicker = (
       elem.highlight = elem.el.querySelector('.highlight');
       elem.highlightList = elem.el.querySelector('.highlight-list');
 
-      elem.highlightList.style.top = -63 + 'px';
+      elem.highlightList.style.top = -70 + 'px';
       elem.highlightList.style.right = -20 + 'px';
 
       elem.highlight.style.height = itemHeight + 'px';
@@ -525,6 +544,9 @@ const useDatePicker = (
       }
     }
   }, [mountTemplate, elems]);
+
+
+  return { date };
 };
 
 export default useDatePicker;

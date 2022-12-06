@@ -1,14 +1,25 @@
-import React from 'react';
-// import './App.css';
+import React, { useState } from 'react';
 
 import DatePicker from './DatePicker';
 
 function App() {
+  const [date, setDate] = useState('');
+
   return (
-    <div style={{ backgroundColor: '#d4d4d4', height: '100vh', position: 'relative', overflow: 'hidden' }}>
-      <text>TITLE</text>
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-        <DatePicker />
+    <div>
+      <h1 style={{ textAlign: 'center', fontSize: 50 }}>{date}</h1>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
+      >
+        <DatePicker
+          onChange={(date: string) => {
+            setDate(date);
+          }}
+        />
       </div>
     </div>
   );
