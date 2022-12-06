@@ -40,6 +40,7 @@ interface Elem {
     touchmove: any;
     touchend: any;
   };
+  values: { value: number; text: string }[];
 }
 
 const useDatePicker = (
@@ -54,32 +55,64 @@ const useDatePicker = (
     quarterCount: 0,
   });
 
-  const [values, setValues] = useState<{ value: number; text: string }[]>([]);
-
   const [elems, setElems] = useState<Elem[]>([]);
+
+  const getMonths = (year?: string) => {
+    let months: { value: number; text: string }[] = [];
+    for (let i = 1; i <= 12; i++) {
+      months.push({
+        value: i,
+        text: i.toString(),
+      });
+    }
+    return months;
+  };
+
+  const getDays = (year: any, month: any) => {
+    let dayCount = new Date(year, month, 0).getDate();
+    let days = [];
+
+    for (let i = 1; i <= dayCount; i++) {
+      days.push({
+        value: i,
+        text: i.toString(),
+      });
+    }
+    return days;
+  };
+
+  const getYears = () => {
+    let currentYear = new Date().getFullYear();
+    let years = [];
+
+    for (let i = currentYear - 20; i < currentYear + 20; i++) {
+      years.push({
+        value: i,
+        text: i.toString(),
+      });
+    }
+    return years;
+  };
 
   const stop = () => {
     // moving = false;
     cancelAnimationFrame(moveT);
   };
 
-  const normalizeScroll = useCallback(
-    (scroll: any) => {
-      let normalizedScroll = scroll;
+  const normalizeScroll = useCallback((scroll: any, elem: Elem) => {
+    let normalizedScroll = scroll;
 
-      while (normalizedScroll < 0) {
-        normalizedScroll += values.length;
-      }
-      normalizedScroll = normalizedScroll % values.length;
+    while (normalizedScroll < 0) {
+      normalizedScroll += elem.values.length;
+    }
+    normalizedScroll = normalizedScroll % elem.values.length;
 
-      return normalizedScroll;
-    },
-    [values.length]
-  );
+    return normalizedScroll;
+  }, []);
 
   const moveTo = useCallback(
     (scroll: any, elem: Elem) => {
-      scroll = normalizeScroll(scroll);
+      scroll = normalizeScroll(scroll, elem);
 
       if (config) {
         const { radius, itemAngle, itemHeight, quarterCount } = config;
@@ -150,9 +183,9 @@ const useDatePicker = (
 
   const selectByScroll = useCallback(
     (paramScroll: any, elem: Elem) => {
-      paramScroll = normalizeScroll(paramScroll) | 0;
-      if (paramScroll > values.length - 1) {
-        paramScroll = values.length - 1;
+      paramScroll = normalizeScroll(paramScroll, elem) | 0;
+      if (paramScroll > elem.values.length - 1) {
+        paramScroll = elem.values.length - 1;
         moveTo(paramScroll, elem);
       }
       moveTo(paramScroll, elem);
@@ -161,7 +194,7 @@ const useDatePicker = (
       // value = this.selected.value;
       // this.onChange && this.onChange(this.selected);
     },
-    [moveTo, normalizeScroll, values.length]
+    [moveTo, normalizeScroll]
   );
 
   const animateMoveByInitV = useCallback(
@@ -227,7 +260,7 @@ const useDatePicker = (
       let scrollAdd = (touchData.startY - eventY) / itemHeight;
       let moveToScroll = scrollAdd + scroll;
 
-      moveToScroll = normalizeScroll(moveToScroll);
+      moveToScroll = normalizeScroll(moveToScroll, elem);
 
       touchData.touchScroll = moveTo(moveToScroll, elem);
     },
@@ -240,7 +273,7 @@ const useDatePicker = (
 
       let circleListHTML = '';
 
-      for (let i = 0; i < values.length; i++) {
+      for (let i = 0; i < elem.values.length; i++) {
         circleListHTML += `<li class="select-option"
                   style="
                     top: ${itemHeight * -0.5}px;
@@ -251,14 +284,14 @@ const useDatePicker = (
                     }deg) translate3d(0, 0, ${radius}px);
                   "
                   data-index="${i}"
-                  >${values[i].text}</li>`;
+                  >${elem.values[i].text}</li>`;
       }
 
       let highListHTML = '';
 
-      for (let i = 0; i < values.length; i++) {
+      for (let i = 0; i < elem.values.length; i++) {
         highListHTML += `<li class="highlight-item" style="height: ${itemHeight}px;">
-                      ${values[i].text}
+                      ${elem.values[i].text}
                     </li>`;
       }
 
@@ -274,7 +307,7 @@ const useDatePicker = (
                       }deg) translate3d(0, 0, ${radius}px);
                     "
                     data-index="${-i - 1}"
-                    >${values[values.length - i - 1].text}</li>` +
+                    >${elem.values[elem.values.length - i - 1].text}</li>` +
           circleListHTML;
 
         circleListHTML += `<li class="select-option"
@@ -283,18 +316,18 @@ const useDatePicker = (
                       height: ${itemHeight}px;
                       line-height: ${itemHeight}px;
                       transform: rotateX(${
-                        -itemAngle * (i + values.length)
+                        -itemAngle * (i + elem.values.length)
                       }deg) translate3d(0, 0, ${radius}px);
                     "
-                    data-index="${i + values.length}"
-                    >${values[i].text}</li>`;
+                    data-index="${i + elem.values.length}"
+                    >${elem.values[i].text}</li>`;
       }
 
       highListHTML =
         `<li class="highlight-item" style="height: ${itemHeight}px;">
-      ${values[values.length - 1].text}
+      ${elem.values[elem.values.length - 1].text}
       </li>` + highListHTML;
-      highListHTML += `<li class="highlight-item" style="height: ${itemHeight}px;">${values[0].text}</li>`;
+      highListHTML += `<li class="highlight-item" style="height: ${itemHeight}px;">${elem.values[0].text}</li>`;
 
       const template = `
         <div id=${elem.el.id} class="select-wrap">
@@ -337,7 +370,7 @@ const useDatePicker = (
         return (e: any) => {
           if (elem.el.contains(e.target) || e.target === elem.el) {
             e.preventDefault();
-            if (values.length) {
+            if (elem.values.length) {
               touchend(e, touchData, elem);
             }
           }
@@ -348,7 +381,7 @@ const useDatePicker = (
         return (e: any) => {
           if (elem.el.contains(e.target) || e.target === elem.el) {
             e.preventDefault();
-            if (values.length) {
+            if (elem.values.length) {
               touchstart(e, touchData, elem);
             }
           }
@@ -359,7 +392,7 @@ const useDatePicker = (
         return (e: any) => {
           if (elem.el.contains(e.target) || e.target === elem.el) {
             e.preventDefault();
-            if (values.length) {
+            if (elem.values.length) {
               touchmove(e, touchData, elem);
             }
           }
@@ -371,14 +404,14 @@ const useDatePicker = (
       elem.el.addEventListener('touchend', elem.events.touchend);
       document.addEventListener('mouseup', elem.events.touchend);
 
-      if (values.length) {
-        const value = values[0].value;
+      if (elem.values.length) {
+        const value = elem.values[0].value;
 
-        for (let i = 0; i < values.length; i++) {
-          if (values[i].value === value) {
+        for (let i = 0; i < elem.values.length; i++) {
+          if (elem.values[i].value === value) {
             window.cancelAnimationFrame(moveT);
             // this.scroll = this._moveTo(i);
-            let initScroll = normalizeScroll(scroll);
+            let initScroll = normalizeScroll(scroll, elem);
             let finalScroll = i;
             let t = Math.sqrt(Math.abs((finalScroll - initScroll) / a));
             animateToScroll(initScroll, finalScroll, t, elem);
@@ -396,12 +429,13 @@ const useDatePicker = (
       touchend,
       touchmove,
       touchstart,
-      values,
     ]
   );
 
   useEffect(() => {
     if (elemRefYear.current && elemRefMonth.current && elemRefDay.current) {
+      const years = getYears();
+
       const elemYear: Elem = {
         el: elemRefYear.current,
         circleList: null,
@@ -420,7 +454,10 @@ const useDatePicker = (
             return false;
           },
         },
+        values: years,
       };
+
+      const months = getMonths();
 
       const elemMonth: Elem = {
         el: elemRefMonth.current,
@@ -440,7 +477,10 @@ const useDatePicker = (
             return false;
           },
         },
+        values: months,
       };
+
+      const days = getDays(new Date().getFullYear(), 1);
 
       const elemDay: Elem = {
         el: elemRefDay.current,
@@ -460,6 +500,7 @@ const useDatePicker = (
             return false;
           },
         },
+        values: days,
       };
 
       const elems = [elemYear, elemMonth, elemDay];
@@ -472,19 +513,10 @@ const useDatePicker = (
 
       const config = { itemHeight, itemAngle, radius, quarterCount, elems };
 
-      let months = [];
-      for (let i = 1; i <= 5; i++) {
-        months.push({
-          value: i,
-          text: i.toString(),
-        });
-      }
-
       setElems(elems);
-      setValues(months);
       setConfig(config);
     }
-  }, [elemRefYear, elemRefMonth, values.length]);
+  }, [elemRefYear, elemRefMonth, elemRefDay]);
 
   useEffect(() => {
     if (elems.length) {

@@ -11,9 +11,9 @@ const DatePicker: React.FC = (props) => {
 
   return (
     <div className="date-selector">
-      <div className='year' id='year' ref={elemRefYear} />
-      <div className='month' id='month' ref={elemRefMonth} />
-      <div className='day' id='day' ref={elemRefDay} />
+      <div className="year" id="year" ref={elemRefYear} />
+      <div className="month" id="month" ref={elemRefMonth} />
+      <div className="day" id="day" ref={elemRefDay} />
     </div>
   );
 };
