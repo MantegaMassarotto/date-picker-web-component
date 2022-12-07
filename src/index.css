@@ -372,15 +372,26 @@ body {
 
 /* date */
 .date-selector {
-  position: absolute;
   perspective: 2000px;
-  bottom: 0px;
   width: 100%;
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  height: 50%;
 }
+
+.date-selector-container {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  bottom: 0px;
+}
+
+.date-selector-container > div {
+  flex: 1;
+}
+
 .date-selector > div {
   flex: 1;
 }

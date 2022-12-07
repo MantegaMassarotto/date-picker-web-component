@@ -20,10 +20,17 @@ const DatePicker: React.FC<Props> = ({ onChange }) => {
   }, [date, onChange]);
 
   return (
-    <div className="date-selector">
-      <div className="year" id="year" ref={elemRefYear} />
-      <div className="month" id="month" ref={elemRefMonth} />
-      <div className="day" id="day" ref={elemRefDay} />
+    <div className='date-selector-container'>
+      <div style={{ display: 'flex', flex: 0.1, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10, paddingRight: 10, backgroundColor: 'black' }}>
+        <button style={{ backgroundColor: 'black', border: 0, textDecoration: 'underline', color: 'white' }}>Cancel</button>
+        <h1 style={{ color: 'white', fontSize: 20 }}>Date Of Birth</h1>
+        <button style={{ backgroundColor: 'black', border: 0, textDecoration: 'underline' , color: 'white'  }}>OK</button>
+      </div>
+      <div className="date-selector">
+        <div className="year" id="year" ref={elemRefYear} />
+        <div className="month" id="month" ref={elemRefMonth} />
+        <div className="day" id="day" ref={elemRefDay} />
+      </div>
     </div>
   );
 };
