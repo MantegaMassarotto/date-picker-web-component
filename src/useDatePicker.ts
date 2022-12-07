@@ -22,12 +22,6 @@ const easing = {
   },
 };
 
-// const events: { touchstart: any; touchmove: any; touchend: any } = {
-//   touchstart: null,
-//   touchmove: null,
-//   touchend: null,
-// };
-
 interface Elem {
   el: HTMLDivElement;
   circleList: any;
@@ -374,7 +368,7 @@ const useDatePicker = (
       elem.highlight = elem.el.querySelector('.highlight');
       elem.highlightList = elem.el.querySelector('.highlight-list');
 
-      elem.highlightList.style.top = -65 + 'px';
+      elem.highlightList.style.top = -75 + 'px';
       elem.highlightList.style.right = -20 + 'px';
 
       elem.highlight.style.height = itemHeight + 'px';
