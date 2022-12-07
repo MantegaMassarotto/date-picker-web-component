@@ -53,9 +53,9 @@ const useDatePicker = (
 
   const [date, setDate] = useState('');
 
-  const [year, setYear] = useState('');
-  const [month, setMonth] = useState('');
-  const [day, setDay] = useState('');
+  const [year, setYear] = useState('2002');
+  const [month, setMonth] = useState('1');
+  const [day, setDay] = useState('1');
 
   useEffect(() => {
     if (year && month && day) {
@@ -121,6 +121,30 @@ const useDatePicker = (
     (scroll: any, elem: Elem) => {
       scroll = normalizeScroll(scroll, elem);
 
+      if (scroll) {
+        const selected = elem.values[scroll];
+        if (selected) {
+          console.log(selected.text);
+          if (elem.el === elemRefYear.current) {
+            setYear(selected.text);
+          } else if (elem.el === elemRefMonth.current) {
+            setMonth(selected.text);
+          } else if (elem.el === elemRefDay.current) {
+            setDay(selected.text);
+          }
+        }
+      }
+
+      // console.log(selected);
+
+      // if (elem.el === elemRefYear.current) {
+      //   setYear(selected.text);
+      // } else if (elem.el === elemRefMonth.current) {
+      //   setMonth(selected.text);
+      // } else if (elem.el === elemRefDay.current) {
+      //   setDay(selected.text);
+      // }
+      
       if (config) {
         const { radius, itemAngle, itemHeight, quarterCount } = config;
 
@@ -141,7 +165,7 @@ const useDatePicker = (
       }
       return scroll;
     },
-    [normalizeScroll, config]
+    [normalizeScroll, config, elemRefYear, elemRefMonth, elemRefDay]
   );
 
   const animateToScroll = useCallback(
@@ -199,17 +223,18 @@ const useDatePicker = (
       moveTo(paramScroll, elem);
       scroll = paramScroll;
       // console.log(scroll);
-      const selected = elem.values[scroll];
+      // const selected = elem.values[scroll];
+      // // console.log('SELECTED>>>>>', scroll);
 
-      if (elem.el === elemRefYear.current) {
-        setYear(selected.text);
-      } else if (elem.el === elemRefMonth.current) {
-        setMonth(selected.text);
-      } else if (elem.el === elemRefDay.current) {
-        setDay(selected.text);
-      }
+      // if (elem.el === elemRefYear.current) {
+      //   setYear(selected.text);
+      // } else if (elem.el === elemRefMonth.current) {
+      //   setMonth(selected.text);
+      // } else if (elem.el === elemRefDay.current) {
+      //   setDay(selected.text);
+      // }
     },
-    [elemRefDay, elemRefMonth, elemRefYear, moveTo, normalizeScroll]
+    [moveTo, normalizeScroll]
   );
 
   const animateMoveByInitV = useCallback(
@@ -368,7 +393,7 @@ const useDatePicker = (
       elem.highlight = elem.el.querySelector('.highlight');
       elem.highlightList = elem.el.querySelector('.highlight-list');
 
-      elem.highlightList.style.top = -75 + 'px';
+      elem.highlightList.style.top = -70 + 'px';
       elem.highlightList.style.right = -20 + 'px';
 
       elem.highlight.style.height = itemHeight + 'px';
