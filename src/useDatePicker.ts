@@ -408,12 +408,15 @@ const useDatePicker = (
 
       if (elem.el === elemRefMonth.current) {
         elem.highlight.style.textAlign =  'left';
-        elem.highlightList.style.right = 1 + 'px';
+        // elem.highlightList.style.right = 1 + 'px';
         // elem.highlightList.style.backgroundColor = 'red';
         // elem.highlightList.style.paddingTop = '10px';
         // elem.highlightList.style.paddingRight = '20px';
 
         elem.circleList.style.textAlign = 'left';
+        elem.circleList.style.left = '20px'
+        // elem.circleList.style.right = '1px';
+
         // elem.circleList.style.paddingRight = '-40px';
       }
 
@@ -500,15 +503,7 @@ const useDatePicker = (
         }
       }
     },
-    [
-      animateToScroll,
-      config,
-      normalizeScroll,
-      selectByScroll,
-      touchend,
-      touchmove,
-      touchstart,
-    ]
+    [animateToScroll, config, elemRefMonth, normalizeScroll, selectByScroll, touchend, touchmove, touchstart]
   );
 
   useEffect(() => {

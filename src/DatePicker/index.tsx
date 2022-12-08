@@ -27,6 +27,7 @@ const DatePicker: React.FC<Props> = ({ onChange }) => {
         <button style={{ backgroundColor: 'white', border: 0, color: '#0074E0', fontWeight: 'bold', fontSize: 16  }}>Save</button>
       </div>
       <div className="date-selector">
+        <div className="selector" />
         <div className="month" id="month" ref={elemRefMonth} />
         <div className="day" id="day" ref={elemRefDay} />
         <div className="year" id="year" ref={elemRefYear} />
