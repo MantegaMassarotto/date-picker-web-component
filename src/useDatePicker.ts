@@ -162,10 +162,14 @@ const useDatePicker = (
           -scroll * itemHeight
         }px, 0)`;
 
+        elem.el.style.color = 'transparent';
+
         [...elem.circleItems].forEach((itemElem) => {
           if (Math.abs(itemElem.dataset.index - scroll) > quarterCount) {
             itemElem.style.visibility = 'hidden';
+            // itemElem.style.color = 'transparent';
           } else {
+            // itemElem.style.color = 'black';
             itemElem.style.visibility = 'visible';
           }
         });
@@ -400,22 +404,29 @@ const useDatePicker = (
       elem.highlight = elem.el.querySelector('.highlight');
       elem.highlightList = elem.el.querySelector('.highlight-list');
 
-      elem.highlightList.style.top = -63 + 'px';
+      elem.highlightList.style.top = -59 + 'px';
       elem.highlightList.style.right = -20 + 'px';
 
       elem.highlight.style.height = itemHeight + 'px';
       elem.highlight.style.lineHeight = itemHeight + 'px';
 
       if (elem.el === elemRefMonth.current) {
-        elem.highlight.style.textAlign =  'left';
-        elem.highlightList.style.right = 1 + 'px';
+        elem.highlight.style.textAlign =  'center';
+        // elem.highlight.style.borderLeftColor =  '#000';
+        // elem.highlight.style.borderLeftWidth =  '1px';
+
+        // elem.highlightList.style.right = -10 + 'px';
         // elem.highlightList.style.backgroundColor = 'red';
         // elem.highlightList.style.paddingTop = '10px';
         // elem.highlightList.style.paddingRight = '20px';
 
-        elem.circleList.style.textAlign = 'left';
+        elem.circleList.style.textAlign = 'center';
+        // elem.circleItems.style.right = -10 + 'px';
         // elem.circleList.style.paddingRight = '-40px';
+      } else if (elem.el === elemRefDay.current) {
+        // elem.highlightList.style.backgroundColor = 'blue';
       }
+
 
       // if (elem.el === elemRefYear.current) {
       //   // elem.highlight.style.marginLeft = 20 + 'px';
