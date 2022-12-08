@@ -65,13 +65,20 @@ const useDatePicker = (
   }, [year, month, day]);
 
   const getMonths = (year?: string) => {
-    let months: { value: number; text: string }[] = [];
-    for (let i = 1; i <= 12; i++) {
-      months.push({
-        value: i,
-        text: i.toString(),
-      });
-    }
+    let months: { value: number; text: string }[] = [
+      { value: 1, text: 'January' },
+      { value: 2, text: 'February' },
+      { value: 3, text: 'March' },
+      { value: 4, text: 'April' },
+      { value: 5, text: 'May' },
+      { value: 6, text: 'June' },
+      { value: 7, text: 'July' },
+      { value: 8, text: 'August' },
+      { value: 9, text: 'September' },
+      { value: 10, text: 'October' },
+      { value: 11, text: 'November' },
+      { value: 12, text: 'December' },
+    ];
     return months;
   };
 
@@ -393,11 +400,45 @@ const useDatePicker = (
       elem.highlight = elem.el.querySelector('.highlight');
       elem.highlightList = elem.el.querySelector('.highlight-list');
 
-      elem.highlightList.style.top = -70 + 'px';
+      elem.highlightList.style.top = -63 + 'px';
       elem.highlightList.style.right = -20 + 'px';
 
       elem.highlight.style.height = itemHeight + 'px';
       elem.highlight.style.lineHeight = itemHeight + 'px';
+
+      if (elem.el === elemRefMonth.current) {
+        elem.highlight.style.textAlign =  'left';
+        elem.highlightList.style.right = 1 + 'px';
+        // elem.highlightList.style.backgroundColor = 'red';
+        // elem.highlightList.style.paddingTop = '10px';
+        // elem.highlightList.style.paddingRight = '20px';
+
+        elem.circleList.style.textAlign = 'left';
+        // elem.circleList.style.paddingRight = '-40px';
+      }
+
+      // if (elem.el === elemRefYear.current) {
+      //   // elem.highlight.style.marginLeft = 20 + 'px';
+      //   // elem.highlightList.style.right = -5 + 'px';
+      //   elem.circleList.style.right = -5 + 'px';
+      //   // elem.highlightList.style.right = -5 + 'px';
+
+      //   // elem.highlight.style.borderBottomLeftRadius = 5 + 'px';
+      //   // elem.highlight.style.borderTopLeftRadius = 5 + 'px';
+      //   // elem.highlight.style.borderLeft = 'red';
+      //   elem.highlight.style.borderLeftColor = '#001489';
+      //   elem.highlight.style.borderLeftWidth = '1px';
+      // }
+
+      // if (elem.el === elemRefDay.current) {
+      //   elem.highlight.style.borderRightColor = '#001489';
+      //   elem.highlight.style.borderRightWidth = '1px';
+      //   // elem.highlightList.style.right = 10 + 'px';
+      //   // elem.highlightList.style.right = 10 + 'px';
+      //   // elem.circleList.style.right = 10 + 'px';
+      //   // elem.highlight.style.borderBottomRightRadius = 5 + 'px';
+      //   // elem.highlight.style.borderTopRightRadius = 5 + 'px';
+      // }
 
       let touchData = {
         startY: 0,
