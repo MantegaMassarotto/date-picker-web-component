@@ -169,11 +169,18 @@ body {
   }
 }
 
-@media all and (min-width: 600px) {
-  // .date-selector-container {
-  //   height: 100%;
-  // }
+@media all and (min-width: 300px) and (max-width: 400px) {
+  .date-selector {
+    .select-wrap {
+      font-size: 14px;
+    }
+    .highlight {
+      font-size: 14px;
+    }
+  }
+};
 
+@media all and (min-width: 600px) {
   .date-selector {
     width: 50%;
   }
@@ -181,9 +188,6 @@ body {
     width: 92%;
   }
   .highlight-list {
-    /* SE */
     top: -75px;
-    /* 11 */
-    // top: -60px;
   }
 };
