@@ -186,14 +186,14 @@ body {
   }
 };
 
-@media all and (min-width: 300px) and (max-width: 414px) {
+@media all and (min-width: 300px) and (max-width: 350px) {
   .date-selector-container {
     height: 60%;
   }
 
   .highlight-list {
     /* SE */
-    top: -15px;
+    top: -60px;
     /* 11 */
     // top: -60px;
   }
@@ -202,7 +202,7 @@ body {
 @media all and (min-width: 414px) and (max-width: 500px) {
   .highlight-list {
     /* SE */
-    top: -68px;
+    top: -60px;
     /* 11 */
     // top: -60px;
   }
