@@ -99,10 +99,12 @@ body {
   position: absolute;
   width: 100%;
   list-style-type: none;
+  top: -140%;
+  // transform: translate(0, -70%);
   /* SE */
   /* top: -45px; */
   /* 11 */
-  top: -60px;
+  // top: -60px;
 }
 
 .date-selector-container {
@@ -181,28 +183,6 @@ body {
   .highlight-list {
     /* SE */
     top: -75px;
-    /* 11 */
-    // top: -60px;
-  }
-};
-
-@media all and (min-width: 300px) and (max-width: 350px) {
-  .date-selector-container {
-    height: 60%;
-  }
-
-  .highlight-list {
-    /* SE */
-    top: -60px;
-    /* 11 */
-    // top: -60px;
-  }
-};
-
-@media all and (min-width: 414px) and (max-width: 500px) {
-  .highlight-list {
-    /* SE */
-    top: -60px;
     /* 11 */
     // top: -60px;
   }
