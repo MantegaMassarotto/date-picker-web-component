@@ -48,11 +48,8 @@ const useDatePicker = (
     radius: 0,
     quarterCount: 0,
   });
-
   const [elems, setElems] = useState<Elem[]>([]);
-
   const [date, setDate] = useState('');
-
   const [year, setYear] = useState('2002');
   const [month, setMonth] = useState('1');
   const [day, setDay] = useState('1');
@@ -380,7 +377,6 @@ const useDatePicker = (
       elem.highlight = elem.el.querySelector('.highlight');
       elem.highlightList = elem.el.querySelector('.highlight-list');
 
-      // elem.highlightList.style.top = -60 + 'px';
       elem.highlightList.style.right = -20 + 'px';
 
       elem.highlight.style.height = itemHeight + 'px';
@@ -388,41 +384,8 @@ const useDatePicker = (
 
       if (elem.el === elemRefMonth.current) {
         elem.highlight.style.textAlign =  'center';
-        // elem.highlight.style.borderLeftColor =  '#000';
-        // elem.highlight.style.borderLeftWidth =  '1px';
-
-        // elem.highlightList.style.right = -10 + 'px';
-        // elem.highlightList.style.backgroundColor = 'red';
-        // elem.highlightList.style.paddingTop = '10px';
-        // elem.highlightList.style.paddingRight = '20px';
-
         elem.circleList.style.textAlign = 'center';
-        // elem.circleItems.style.right = -10 + 'px';
-        // elem.circleList.style.paddingRight = '-40px';
       }
-
-      // if (elem.el === elemRefYear.current) {
-      //   // elem.highlight.style.marginLeft = 20 + 'px';
-      //   // elem.highlightList.style.right = -5 + 'px';
-      //   elem.circleList.style.right = -5 + 'px';
-      //   // elem.highlightList.style.right = -5 + 'px';
-
-      //   // elem.highlight.style.borderBottomLeftRadius = 5 + 'px';
-      //   // elem.highlight.style.borderTopLeftRadius = 5 + 'px';
-      //   // elem.highlight.style.borderLeft = 'red';
-      //   elem.highlight.style.borderLeftColor = '#001489';
-      //   elem.highlight.style.borderLeftWidth = '1px';
-      // }
-
-      // if (elem.el === elemRefDay.current) {
-      //   elem.highlight.style.borderRightColor = '#001489';
-      //   elem.highlight.style.borderRightWidth = '1px';
-      //   // elem.highlightList.style.right = 10 + 'px';
-      //   // elem.highlightList.style.right = 10 + 'px';
-      //   // elem.circleList.style.right = 10 + 'px';
-      //   // elem.highlight.style.borderBottomRightRadius = 5 + 'px';
-      //   // elem.highlight.style.borderTopRightRadius = 5 + 'px';
-      // }
 
       let touchData = {
         startY: 0,
@@ -473,7 +436,7 @@ const useDatePicker = (
         for (let i = 0; i < elem.values.length; i++) {
           if (elem.values[i].value === value) {
             window.cancelAnimationFrame(moveT);
-            // this.scroll = this._moveTo(i);
+            // scroll = moveTo(i, elem);
             let initScroll = normalizeScroll(scroll, elem);
             let finalScroll = i;
             let t = Math.sqrt(Math.abs((finalScroll - initScroll) / a));
@@ -484,7 +447,7 @@ const useDatePicker = (
         }
       }
     },
-    [animateToScroll, config, elemRefDay, elemRefMonth, normalizeScroll, selectByScroll, touchend, touchmove, touchstart]
+    [animateToScroll, config, elemRefMonth, normalizeScroll, selectByScroll, touchend, touchmove, touchstart]
   );
 
   useEffect(() => {
