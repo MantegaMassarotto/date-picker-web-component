@@ -4,27 +4,35 @@ import DatePicker from './DatePicker';
 
 function App() {
   const [date, setDate] = useState<Date>();
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       {date && (
         <h1
-          style={{ textAlign: 'center', fontSize: 30 }}
+          style={{ textAlign: 'center', fontSize: 20 }}
         >{`${date.toISOString()}`}</h1>
       )}
-      <div
+      <button
+        onClick={() => {
+          setIsDatePickerVisible(!isDatePickerVisible);
+        }}
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
+          width: 150,
+          height: 50,
+          alignSelf: 'center',
+          backgroundColor: '#001489',
+          color: 'white',
         }}
       >
-        <DatePicker
-          onChange={(date: Date) => {
-            setDate(date);
-          }}
-        />
-      </div>
+        {`${isDatePickerVisible ? 'HIDE' : 'SHOW'} DATE PICKER`}
+      </button>
+      <DatePicker
+        isVisible={isDatePickerVisible}
+        onChange={(date: Date) => {
+          setDate(date);
+        }}
+      />
     </div>
   );
 }
