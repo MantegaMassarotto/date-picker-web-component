@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 import DatePicker from './DatePicker';
 
 function App() {
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState<Date>();
 
   return (
     <div>
-      <h1 style={{ textAlign: 'center', fontSize: 50 }}>{date}</h1>
+      {date && (
+        <h1
+          style={{ textAlign: 'center', fontSize: 30 }}
+        >{`${date.toISOString()}`}</h1>
+      )}
       <div
         style={{
           display: 'flex',
@@ -16,7 +20,7 @@ function App() {
         }}
       >
         <DatePicker
-          onChange={(date: string) => {
+          onChange={(date: Date) => {
             setDate(date);
           }}
         />

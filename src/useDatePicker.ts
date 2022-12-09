@@ -40,7 +40,7 @@ interface Elem {
 const useDatePicker = (
   elemRefYear: React.RefObject<HTMLDivElement>,
   elemRefMonth: React.RefObject<HTMLDivElement>,
-  elemRefDay: React.RefObject<HTMLDivElement>,
+  elemRefDay: React.RefObject<HTMLDivElement>
 ) => {
   const [config, setConfig] = useState<Config>({
     itemAngle: 0,
@@ -49,15 +49,15 @@ const useDatePicker = (
     quarterCount: 0,
   });
   const [elems, setElems] = useState<Elem[]>([]);
-  const [date, setDate] = useState('');
-  const [year, setYear] = useState('2002');
-  const [month, setMonth] = useState('1');
-  const [day, setDay] = useState('1');
+  const [date, setDate] = useState<Date>(new Date(1950, 1));
+  const [year, setYear] = useState(1950);
+  const [month, setMonth] = useState(1);
+  const [day, setDay] = useState(1);
 
   useEffect(() => {
     if (year && month && day) {
-      const date =  `${year}-${month}-${day}`
-      setDate(date);
+      const date = `${year}-${month}-${day}`;
+      setDate(new Date(date));
     }
   }, [year, month, day]);
 
@@ -79,7 +79,7 @@ const useDatePicker = (
     return months;
   };
 
-  const getDays = (year: any, month: any) => {
+  const getDays = (year: number, month: number) => {
     let dayCount = new Date(year, month, 0).getDate();
     let days = [];
 
@@ -96,7 +96,7 @@ const useDatePicker = (
     let currentYear = new Date().getFullYear();
     let years = [];
 
-    for (let i = currentYear - 20; i < currentYear + 20; i++) {
+    for (let i = currentYear - 72; i <= currentYear; i++) {
       years.push({
         value: i,
         text: i.toString(),
@@ -126,16 +126,18 @@ const useDatePicker = (
       scroll = normalizeScroll(scroll, elem);
 
       if (scroll) {
-        const selected = elem.values[scroll] ? elem.values[scroll] : elem.values[0];
+        const selected = elem.values[scroll]
+          ? elem.values[scroll]
+          : elem.values[0];
         if (elem.el === elemRefYear.current) {
-          setYear(selected.text);
+          setYear(selected.value);
         } else if (elem.el === elemRefMonth.current) {
-          setMonth(selected.text);
+          setMonth(selected.value);
         } else if (elem.el === elemRefDay.current) {
-          setDay(selected.text);
+          setDay(selected.value);
         }
       }
-      
+
       if (config) {
         const { radius, itemAngle, itemHeight, quarterCount } = config;
 
@@ -151,9 +153,7 @@ const useDatePicker = (
         [...elem.circleItems].forEach((itemElem) => {
           if (Math.abs(itemElem.dataset.index - scroll) > quarterCount) {
             itemElem.style.visibility = 'hidden';
-            // itemElem.style.color = 'transparent';
           } else {
-            // itemElem.style.color = 'black';
             itemElem.style.visibility = 'visible';
           }
         });
@@ -174,7 +174,7 @@ const useDatePicker = (
       let pass = 0;
       let totalScrollLen = finalScroll - initScroll;
 
-      return new Promise<void>((resolve, reject) => {
+      return new Promise<void>((resolve) => {
         // moving = true;
         let tick = () => {
           pass = new Date().getTime() / 1000 - start;
@@ -383,7 +383,7 @@ const useDatePicker = (
       elem.highlight.style.lineHeight = itemHeight + 'px';
 
       if (elem.el === elemRefMonth.current) {
-        elem.highlight.style.textAlign =  'center';
+        elem.highlight.style.textAlign = 'center';
         elem.circleList.style.textAlign = 'center';
       }
 
@@ -447,7 +447,16 @@ const useDatePicker = (
         }
       }
     },
-    [animateToScroll, config, elemRefMonth, normalizeScroll, selectByScroll, touchend, touchmove, touchstart]
+    [
+      animateToScroll,
+      config,
+      elemRefMonth,
+      normalizeScroll,
+      selectByScroll,
+      touchend,
+      touchmove,
+      touchstart,
+    ]
   );
 
   useEffect(() => {
@@ -543,7 +552,6 @@ const useDatePicker = (
       }
     }
   }, [mountTemplate, elems]);
-
 
   return { date };
 };

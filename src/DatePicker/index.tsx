@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import useDatePicker from '../useDatePicker';
 
 type Props = {
-  onChange: (date: string) => void;
+  onChange: (date: Date) => void;
 }
 
 const DatePicker: React.FC<Props> = ({ onChange }) => {
