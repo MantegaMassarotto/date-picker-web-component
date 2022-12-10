@@ -49,15 +49,15 @@ const useDatePicker = (
     quarterCount: 0,
   });
   const [elems, setElems] = useState<Elem[]>([]);
-  const [date, setDate] = useState<Date>(new Date(1950, 20));
+  const [dateString, setDateString] = useState('');
   const [year, setYear] = useState(1950);
   const [month, setMonth] = useState(1);
   const [day, setDay] = useState(1);
 
   useEffect(() => {
     if (year && month && day) {
-      const date = `${year}/${month}/${day}`;
-      setDate(new Date(date));
+      const date = `${year}-${month}-${day}`;
+      setDateString(date);
     }
   }, [year, month, day]);
 
@@ -556,7 +556,7 @@ const useDatePicker = (
     }
   }, [mountTemplate, elems]);
 
-  return { date };
+  return { dateString };
 };
 
 export default useDatePicker;

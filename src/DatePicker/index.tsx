@@ -5,7 +5,7 @@ import './datepicker.scss';
 import useDatePicker from './useDatePicker';
 
 type Props = {
-  onSave: (date: Date) => void;
+  onSave: (dateString: string) => void;
   onCancel: () => void;
   isVisible: boolean;
 };
@@ -15,7 +15,7 @@ const DatePicker: React.FC<Props> = ({ onSave, onCancel, isVisible }) => {
   const elemRefMonth = useRef<HTMLDivElement>(null);
   const elemRefDay = useRef<HTMLDivElement>(null);
 
-  const { date } = useDatePicker(elemRefYear, elemRefMonth, elemRefDay);
+  const { dateString } = useDatePicker(elemRefYear, elemRefMonth, elemRefDay);
 
   return (
     <div
@@ -59,7 +59,7 @@ const DatePicker: React.FC<Props> = ({ onSave, onCancel, isVisible }) => {
             fontSize: 16,
           }}
           onClick={() => {
-            onSave(date);
+            onSave(dateString);
           }}
         >
           Save

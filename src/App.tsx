@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import DatePicker from './DatePicker';
 
 function App() {
-  const [date, setDate] = useState<Date>();
+  const [date, setDate] = useState('');
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
   return (
@@ -11,7 +11,7 @@ function App() {
       {date && (
         <h1
           style={{ textAlign: 'center', fontSize: 20 }}
-        >{`${date.toISOString()}`}</h1>
+        >{`${date}`}</h1>
       )}
       <button
         onClick={() => {
@@ -32,7 +32,7 @@ function App() {
         onCancel={() => {
           setIsDatePickerVisible(false);
         }}
-        onSave={(date: Date) => {
+        onSave={(date: string) => {
           setDate(date);
         }}
       />
