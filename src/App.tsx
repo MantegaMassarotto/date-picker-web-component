@@ -29,7 +29,10 @@ function App() {
       </button>
       <DatePicker
         isVisible={isDatePickerVisible}
-        onChange={(date: Date) => {
+        onCancel={() => {
+          setIsDatePickerVisible(false);
+        }}
+        onSave={(date: Date) => {
           setDate(date);
         }}
       />

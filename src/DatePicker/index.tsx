@@ -1,24 +1,21 @@
-import React, { useEffect, useRef, memo } from 'react';
+import React, { useRef, memo } from 'react';
 
-import useDatePicker from '../useDatePicker';
+import './datepicker.scss';
+
+import useDatePicker from './useDatePicker';
 
 type Props = {
-  onChange: (date: Date) => void;
+  onSave: (date: Date) => void;
+  onCancel: () => void;
   isVisible: boolean;
 };
 
-const DatePicker: React.FC<Props> = ({ onChange, isVisible }) => {
+const DatePicker: React.FC<Props> = ({ onSave, onCancel, isVisible }) => {
   const elemRefYear = useRef<HTMLDivElement>(null);
   const elemRefMonth = useRef<HTMLDivElement>(null);
   const elemRefDay = useRef<HTMLDivElement>(null);
 
   const { date } = useDatePicker(elemRefYear, elemRefMonth, elemRefDay);
-
-  useEffect(() => {
-    if (date) {
-      onChange(date);
-    }
-  }, [date, onChange]);
 
   return (
     <div
@@ -48,6 +45,7 @@ const DatePicker: React.FC<Props> = ({ onChange, isVisible }) => {
             color: '#0074E0',
             fontSize: 16,
           }}
+          onClick={onCancel}
         >
           Cancel
         </button>
@@ -59,6 +57,9 @@ const DatePicker: React.FC<Props> = ({ onChange, isVisible }) => {
             color: '#0074E0',
             fontWeight: 'bold',
             fontSize: 16,
+          }}
+          onClick={() => {
+            onSave(date);
           }}
         >
           Save

@@ -51,8 +51,8 @@ const useDatePicker = (
   const [elems, setElems] = useState<Elem[]>([]);
   const [date, setDate] = useState<Date>(new Date(1950, 20));
   const [year, setYear] = useState(1950);
-  const [month, setMonth] = useState(2);
-  const [day, setDay] = useState(5);
+  const [month, setMonth] = useState(1);
+  const [day, setDay] = useState(1);
 
   useEffect(() => {
     if (year && month && day) {
