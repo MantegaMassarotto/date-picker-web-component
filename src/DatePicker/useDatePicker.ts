@@ -9,8 +9,7 @@ interface Config {
 
 let scroll: any;
 // let moving: boolean;
-let moveT = 0; // tick
-// let value: any = 0;
+let moveT = 0;
 let a = 0.8 * 10;
 
 const easing = {
