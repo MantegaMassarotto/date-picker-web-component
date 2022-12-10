@@ -7,7 +7,7 @@ interface Config {
   quarterCount: number;
 }
 
-let scroll: any;
+// let scroll: any;
 // let moving: boolean;
 let moveT = 0;
 let a = 0.8 * 10;
@@ -34,6 +34,7 @@ interface Elem {
     touchend: any;
   };
   values: { value: number; text: string }[];
+  scroll: number;
 }
 
 const useDatePicker = (
@@ -179,7 +180,7 @@ const useDatePicker = (
           pass = new Date().getTime() / 1000 - start;
 
           if (pass < t) {
-            scroll = moveTo(
+            elem.scroll = moveTo(
               initScroll + easing['easeOutQuart'](pass / t) * totalScrollLen,
               elem
             );
@@ -187,7 +188,7 @@ const useDatePicker = (
           } else {
             resolve();
             stop();
-            scroll = moveTo(initScroll + totalScrollLen, elem);
+            elem.scroll = moveTo(initScroll + totalScrollLen, elem);
           }
         };
         tick();
@@ -202,7 +203,7 @@ const useDatePicker = (
     let eventY = e.clientY || e.touches[0].clientY;
     touchData.startY = eventY;
     touchData.yArr = [[eventY, new Date().getTime()]];
-    touchData.touchScroll = scroll;
+    touchData.touchScroll = elem.scroll;
     stop();
   }, []);
 
@@ -215,7 +216,7 @@ const useDatePicker = (
         moveTo(paramScroll, elem);
       }
       moveTo(paramScroll, elem);
-      scroll = paramScroll;
+      elem.scroll = paramScroll;
     },
     [moveTo, normalizeScroll]
   );
@@ -231,10 +232,10 @@ const useDatePicker = (
       a1 = initV > 0 ? -a : a;
       t1 = Math.abs(initV / a1);
       totalScrollLen = initV * t1 + (a1 * t1 * t1) / 2;
-      finalScroll = Math.round(scroll + totalScrollLen);
-      animateToScroll(scroll, finalScroll, t1, elem);
+      finalScroll = Math.round(elem.scroll + totalScrollLen);
+      animateToScroll(elem.scroll, finalScroll, t1, elem);
 
-      selectByScroll(scroll, elem);
+      selectByScroll(elem.scroll, elem);
     },
     [animateToScroll, selectByScroll]
   );
@@ -262,7 +263,7 @@ const useDatePicker = (
         v = Math.abs(v) > 30 ? 30 * sign : v;
       }
 
-      scroll = touchData.touchScroll;
+      elem.scroll = touchData.touchScroll;
       animateMoveByInitV(v, elem);
     },
     [animateMoveByInitV, config]
@@ -279,7 +280,7 @@ const useDatePicker = (
       }
 
       let scrollAdd = (touchData.startY - eventY) / itemHeight;
-      let moveToScroll = scrollAdd + scroll;
+      let moveToScroll = scrollAdd + elem.scroll;
 
       moveToScroll = normalizeScroll(moveToScroll, elem);
 
@@ -436,7 +437,7 @@ const useDatePicker = (
           if (elem.values[i].value === value) {
             window.cancelAnimationFrame(moveT);
             // scroll = moveTo(i, elem);
-            let initScroll = normalizeScroll(scroll, elem);
+            let initScroll = normalizeScroll(elem.scroll, elem);
             let finalScroll = i;
             let t = Math.sqrt(Math.abs((finalScroll - initScroll) / a));
             animateToScroll(initScroll, finalScroll, t, elem);
@@ -481,6 +482,7 @@ const useDatePicker = (
           },
         },
         values: years,
+        scroll: 0,
       };
 
       const months = getMonths();
@@ -504,6 +506,7 @@ const useDatePicker = (
           },
         },
         values: months,
+        scroll: 0,
       };
 
       const days = getDays(new Date().getFullYear(), 1);
@@ -527,6 +530,7 @@ const useDatePicker = (
           },
         },
         values: days,
+        scroll: 0,
       };
 
       const elems = [elemYear, elemMonth, elemDay];
