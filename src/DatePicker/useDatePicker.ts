@@ -28,9 +28,9 @@ interface Elem {
   highlightList: HTMLUListElement | null;
   highListItems: any;
   events: {
-    touchstart: any;
-    touchmove: any;
-    touchend: any;
+    touchstart: (e: any) => void;
+    touchmove: (e: any) => void;
+    touchend: (e: any) => void;
   };
   values: { value: number; text: string }[];
   scroll: number;
@@ -460,79 +460,35 @@ const useDatePicker = (
     ]
   );
 
+  const mountElement = (elemRef: HTMLDivElement, values: { value: number; text: string }[]) => {
+    const elem: Elem = {
+      el: elemRef,
+      circleList: null,
+      circleItems: null,
+      highlight: null,
+      highlightList: null,
+      highListItems: null,
+      events: {
+        touchend: () => {},
+        touchmove: () => {},
+        touchstart: () => {},
+      },
+      values,
+      scroll: 0,
+    }
+
+    return elem;
+  }
+
   useEffect(() => {
     if (elemRefYear.current && elemRefMonth.current && elemRefDay.current) {
       const years = getYears();
-
-      const elemYear: Elem = {
-        el: elemRefYear.current,
-        circleList: null,
-        circleItems: null,
-        highlight: null,
-        highlightList: null,
-        highListItems: null,
-        events: {
-          touchend: () => {
-            return false;
-          },
-          touchmove: () => {
-            return false;
-          },
-          touchstart: () => {
-            return false;
-          },
-        },
-        values: years,
-        scroll: 0,
-      };
-
       const months = getMonths();
-
-      const elemMonth: Elem = {
-        el: elemRefMonth.current,
-        circleList: null,
-        circleItems: null,
-        highlight: null,
-        highlightList: null,
-        highListItems: null,
-        events: {
-          touchend: () => {
-            return false;
-          },
-          touchmove: () => {
-            return false;
-          },
-          touchstart: () => {
-            return false;
-          },
-        },
-        values: months,
-        scroll: 0,
-      };
-
       const days = getDays(new Date().getFullYear(), 1);
 
-      const elemDay: Elem = {
-        el: elemRefDay.current,
-        circleList: null,
-        circleItems: null,
-        highlight: null,
-        highlightList: null,
-        highListItems: null,
-        events: {
-          touchend: () => {
-            return false;
-          },
-          touchmove: () => {
-            return false;
-          },
-          touchstart: () => {
-            return false;
-          },
-        },
-        values: days,
-        scroll: 0,
-      };
+      const elemYear = mountElement(elemRefYear.current, years);
+      const elemMonth = mountElement(elemRefMonth.current, months);
+      const elemDay = mountElement(elemRefDay.current, days);
 
       const elems = [elemYear, elemMonth, elemDay];
 
