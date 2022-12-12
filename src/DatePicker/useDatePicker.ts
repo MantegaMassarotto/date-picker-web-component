@@ -7,7 +7,6 @@ interface Config {
   quarterCount: number;
 }
 
-// let scroll: any;
 // let moving: boolean;
 let moveT = 0;
 let a = 0.8 * 10;
@@ -23,10 +22,10 @@ const easing = {
 
 interface Elem {
   el: HTMLDivElement;
-  circleList: any;
-  circleItems: any;
-  highlight: any;
-  highlightList: any;
+  circleList: HTMLUListElement | null;
+  circleItems: NodeListOf<any> | null ;
+  highlight: HTMLDivElement | null;
+  highlightList: HTMLUListElement | null;
   highListItems: any;
   events: {
     touchstart: any;
@@ -138,7 +137,7 @@ const useDatePicker = (
         }
       }
 
-      if (config) {
+      if (config && elem.highlightList && elem.circleList && elem.circleItems) {
         const { radius, itemAngle, itemHeight, quarterCount } = config;
 
         elem.circleList.style.transform = `translate3d(0, 0, ${-radius}px) rotateX(${
@@ -150,7 +149,7 @@ const useDatePicker = (
 
         elem.el.style.color = 'transparent';
 
-        [...elem.circleItems].forEach((itemElem) => {
+        Array.from(elem.circleItems).forEach((itemElem) => {
           if (Math.abs(itemElem.dataset.index - scroll) > quarterCount) {
             itemElem.style.visibility = 'hidden';
           } else {
@@ -377,14 +376,16 @@ const useDatePicker = (
       elem.highlight = elem.el.querySelector('.highlight');
       elem.highlightList = elem.el.querySelector('.highlight-list');
 
-      elem.highlightList.style.right = -20 + 'px';
+      if (elem.highlight &&  elem.highlightList &&  elem.circleList) {
+        elem.highlightList.style.right = -20 + 'px';
 
-      elem.highlight.style.height = itemHeight + 'px';
-      elem.highlight.style.lineHeight = itemHeight + 'px';
-
-      if (elem.el === elemRefMonth.current) {
-        elem.highlight.style.textAlign = 'center';
-        elem.circleList.style.textAlign = 'center';
+        elem.highlight.style.height = itemHeight + 'px';
+        elem.highlight.style.lineHeight = itemHeight + 'px';
+  
+        if (elem.el === elemRefMonth.current) {
+          elem.highlight.style.textAlign = 'center';
+          elem.circleList.style.textAlign = 'center';
+        }
       }
 
       let touchData = {
@@ -392,7 +393,7 @@ const useDatePicker = (
         yArr: [],
       };
 
-      elem.events['touchend'] = ((eventName) => {
+      elem.events['touchend'] = (() => {
         return (e: any) => {
           if (elem.el.contains(e.target) || e.target === elem.el) {
             e.preventDefault();
@@ -401,9 +402,9 @@ const useDatePicker = (
             }
           }
         };
-      })('touchend');
+      })();
 
-      elem.events['touchstart'] = ((eventName) => {
+      elem.events['touchstart'] = (() => {
         return (e: any) => {
           if (elem.el.contains(e.target) || e.target === elem.el) {
             e.preventDefault();
@@ -412,9 +413,9 @@ const useDatePicker = (
             }
           }
         };
-      })('touchstart');
+      })();
 
-      elem.events['touchmove'] = ((eventName) => {
+      elem.events['touchmove'] = (() => {
         return (e: any) => {
           if (elem.el.contains(e.target) || e.target === elem.el) {
             e.preventDefault();
@@ -423,7 +424,7 @@ const useDatePicker = (
             }
           }
         };
-      })('touchmove');
+      })();
 
       elem.el.addEventListener('touchstart', elem.events.touchstart);
       document.addEventListener('mousedown', elem.events.touchstart);
@@ -466,10 +467,10 @@ const useDatePicker = (
       const elemYear: Elem = {
         el: elemRefYear.current,
         circleList: null,
-        circleItems: null, // list
+        circleItems: null,
         highlight: null,
         highlightList: null,
-        highListItems: null, // list
+        highListItems: null,
         events: {
           touchend: () => {
             return false;
@@ -490,10 +491,10 @@ const useDatePicker = (
       const elemMonth: Elem = {
         el: elemRefMonth.current,
         circleList: null,
-        circleItems: null, // list
+        circleItems: null,
         highlight: null,
         highlightList: null,
-        highListItems: null, // list
+        highListItems: null,
         events: {
           touchend: () => {
             return false;
@@ -514,10 +515,10 @@ const useDatePicker = (
       const elemDay: Elem = {
         el: elemRefDay.current,
         circleList: null,
-        circleItems: null, // list
+        circleItems: null,
         highlight: null,
         highlightList: null,
-        highListItems: null, // list
+        highListItems: null,
         events: {
           touchend: () => {
             return false;
